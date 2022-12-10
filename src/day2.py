@@ -9,11 +9,8 @@ def decrypt_second(letter):
     return ord(letter) - ord('X')
 
 def value_win(v1, v2):
-    if v1 == v2:
-        return 3
-    if v2 == 2 and v1 == 1 or v2 == 1 and v1 == 0 or v2 == 0 and v1 == 2:
-        return 6
-    return 0
+    res = (1 + v2 - v1) % 3
+    return res * 3
 
 def value_shape(v):
     return v+1
