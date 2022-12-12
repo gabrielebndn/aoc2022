@@ -4,6 +4,9 @@ from dataclasses import dataclass
 TESTFILE = "../resources/test_7.txt"
 FILENAME = "../resources/input_7.txt"
 
+FILESYSTEM_SIZE = 70000000
+UNUSED_NEEDED   = 30000000
+
 class Entry:
     pass
 
@@ -136,9 +139,20 @@ def exo_1():
 
 
 def exo_2():
-    pass
+    root = parse_file(FILENAME)
+    list_ = recurse_sizes(root)
+    assert list_[0].size == root.size
+
+    full = root.size
+    min_ = list_[0]
+    max_size = FILESYSTEM_SIZE - UNUSED_NEEDED
+    for f in list_:
+        if full-f.size < max_size:
+            if f.size < min_.size:
+                min_ = f
+    return min_
+
 
 if __name__ == "__main__":
     print(exo_1())
-    # print(exo_2())
-    pass
+    print(exo_2())
