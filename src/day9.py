@@ -76,8 +76,9 @@ class Config:
         return res
 
 class Rope:
-    def __init__(self):
-        self.seq = [Config() for _ in range(9)]
+    def __init__(self, N: int):
+        assert N > 0
+        self.seq = [Config() for _ in range(N)]
 
     def evolve(self):
         head = self.head
@@ -103,10 +104,9 @@ class Rope:
     def tail(self):
         return self.seq[-1].tail
 
-def exo_1():
-    c = Config()
+def launch_simu(filename, c):
     seq = [c]
-    with open(FILENAME) as f:
+    with open(filename) as f:
         while line := f.readline():
             line = line.strip()
             move = Move.parse(line)
@@ -115,18 +115,11 @@ def exo_1():
                 seq.append(c)
     return len(set([tuple(c.tail) for c in seq]))
 
+def exo_1():
+    return launch_simu(FILENAME, Config())
 
 def exo_2():
-    r = Rope()
-    seq = [r]
-    with open(FILENAME) as f:
-        while line := f.readline():
-            line = line.strip()
-            move = Move.parse(line)
-            for _ in range(move.n):
-                r = r.applyDirection(move.d)
-                seq.append(r)
-    return len(set([tuple(r.tail) for r in seq]))
+    return launch_simu(FILENAME, Rope(9))
 
 
 if __name__ == "__main__":
