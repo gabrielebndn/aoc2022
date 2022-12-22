@@ -75,6 +75,33 @@ class Config:
         res.evolve()
         return res
 
+class Rope:
+    def __init__(self):
+        self.seq = [Config() for _ in range(9)]
+
+    def evolve(self):
+        head = self.head
+        for c in self.seq:
+            c.head = head
+            c.evolve()
+            head = c.tail
+    
+    def moveHead(self, d: Direction):
+        self.seq[0].moveHead(d)
+
+    def applyDirection(self, d: Direction) -> 'Rope':
+        res = copy.deepcopy(self)
+        res.moveHead(d)
+        res.evolve()
+        return res
+
+    @property
+    def head(self):
+        return self.seq[0].head
+
+    @property
+    def tail(self):
+        return self.seq[-1].tail
 
 def exo_1():
     c = Config()
@@ -90,7 +117,16 @@ def exo_1():
 
 
 def exo_2():
-    pass
+    r = Rope()
+    seq = [r]
+    with open(FILENAME) as f:
+        while line := f.readline():
+            line = line.strip()
+            move = Move.parse(line)
+            for _ in range(move.n):
+                r = r.applyDirection(move.d)
+                seq.append(r)
+    return len(set([tuple(r.tail) for r in seq]))
 
 
 if __name__ == "__main__":
