@@ -1,7 +1,3 @@
-import copy
-import numpy as np
-from enum import Enum
-from dataclasses import dataclass
 import typing as tp
 
 FILENAME = "../resources/input_10.txt"
@@ -27,6 +23,7 @@ def run_instructions(filename):
                 seq.append(latest + i)
     return seq
 
+
 def exo_1():
     key_cycles = [20 + 40 * k for k in range(6)]
     seq = run_instructions(FILENAME)
@@ -39,7 +36,18 @@ def exo_1():
 
 
 def exo_2():
-    pass
+    seq = run_instructions(FILENAME)
+    rows = 6
+    cols = 40
+    s = ''
+    i = 0
+    for _ in range(rows):
+        for c in range(cols):
+            p = seq[i]
+            s += '#' if abs(c-p) <= 1 else ' '
+            i += 1
+        s += '\n'
+    return s
 
 
 if __name__ == "__main__":
